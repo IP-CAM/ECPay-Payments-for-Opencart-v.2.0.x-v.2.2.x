@@ -85,14 +85,14 @@ class ControllerPaymentEcpay extends Controller {
 							array(
 								'Name' => $this->language->get('ecpay_text_item_name'),
 								'Price' => $aio->Send['TotalAmount'],
-								//'Currency' => $_SESSION['currency'],
+                                'Currency' => $this->config->get('config_currency'),
 								'Quantity' => 1,
 								'URL' => ''
 							)
 						);
 						
 						# Set the trade description
-						$aio->Send['TradeDesc'] = 'ecpay_module_opencart_1.0.1114';
+						$aio->Send['TradeDesc'] = 'ecpay_module_opencart_1.0.0921';
 						
 						# Get the chosen payment and installment
 						$type_pieces = explode('_', $payment_type);
@@ -136,7 +136,7 @@ class ControllerPaymentEcpay extends Controller {
 					
 					# Update order status and comments
 					$payment_methods = $this->config->get('ecpay_payment_methods');
-					$order_create_status_id = $this->config->get('ecpay_create_status');
+					$order_create_status_id = 2;# processing
 					$payment_desc = $this->language->get('ecpay_text_' . $payment_methods[$payment_type]);
 					$this->model_checkout_order->addOrderHistory($order_id, $order_create_status_id, $payment_desc, true);
 				
@@ -256,8 +256,8 @@ class ControllerPaymentEcpay extends Controller {
 						
 						# Update the order status and comments
 						$fail_message = sprintf('Order %s Exception.(%s: %s)', $cart_order_id, $return_code, $return_message);
-						$order_create_status_id = $this->config->get('ecpay_create_status');
-						$paid_succeeded_status_id = $this->config->get('ecpay_success_status');
+						$order_create_status_id = 2;# processing
+						$paid_succeeded_status_id = 5;# Complete
 						
 						switch($ecpay_payment_method) {
 							case ECPay_PaymentMethod::Credit:
@@ -278,7 +278,7 @@ class ControllerPaymentEcpay extends Controller {
 										);
 										
 										
-										// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• START
+										// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê START
 										$nInvoice_Status  = $this->config->get('ecpayinvoice_status');
 										if($nInvoice_Status == 1)
 										{
@@ -290,7 +290,7 @@ class ControllerPaymentEcpay extends Controller {
 												$this->model_payment_ecpayinvoice->createInvoiceNo($cart_order_id, $sCheck_Invoice_SDK);
 											}
 										}
-										// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• END
+										// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê END
 	
 									}
 								}
@@ -325,7 +325,7 @@ class ControllerPaymentEcpay extends Controller {
 												true
 											);
 											
-											// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• START
+											// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê START
 											$nInvoice_Status  = $this->config->get('ecpayinvoice_status');
 											if($nInvoice_Status == 1)
 											{
@@ -337,7 +337,7 @@ class ControllerPaymentEcpay extends Controller {
 													$this->model_payment_ecpayinvoice->createInvoiceNo($cart_order_id, $sCheck_Invoice_SDK);
 												}
 											}
-											// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• END
+											// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê END
 											
 										}
 									}
@@ -371,7 +371,7 @@ class ControllerPaymentEcpay extends Controller {
 											);
 											
 											
-											// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• START
+											// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê START
 											$nInvoice_Status  = $this->config->get('ecpayinvoice_status');
 											if($nInvoice_Status == 1)
 											{
@@ -383,7 +383,7 @@ class ControllerPaymentEcpay extends Controller {
 													$this->model_payment_ecpayinvoice->createInvoiceNo($cart_order_id, $sCheck_Invoice_SDK);
 												}
 											}
-											// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• END
+											// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê END
 										}
 									}
 								}
@@ -417,7 +417,7 @@ class ControllerPaymentEcpay extends Controller {
 												true
 											);
 											
-											// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• START
+											// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê START
 											$nInvoice_Status  = $this->config->get('ecpayinvoice_status');
 											if($nInvoice_Status == 1)
 											{
@@ -429,7 +429,7 @@ class ControllerPaymentEcpay extends Controller {
 													$this->model_payment_ecpayinvoice->createInvoiceNo($cart_order_id, $sCheck_Invoice_SDK);
 												}
 											}
-											// åˆ¤æ–·é›»å­ç™¼ç¥¨æ˜¯å¦å•Ÿå‹• END
+											// §PÂ_¹q¤lµo²¼¬O§_±Ò°Ê END
 										}
 									}
 								}
@@ -444,7 +444,7 @@ class ControllerPaymentEcpay extends Controller {
 		} catch (Exception $e) {
 			$error = $e->getMessage();
 			if (!empty($order)) {
-				$paid_failed_status_id = $this->config->get('ecpay_failed_status');
+				$paid_failed_status_id = 10;
 				$comments = sprintf($this->language->get('ecpay_text_failure_comments'), $error);
 				$this->model_checkout_order->addOrderHistory($cart_order_id, $paid_failed_status_id, $comments);
 			}

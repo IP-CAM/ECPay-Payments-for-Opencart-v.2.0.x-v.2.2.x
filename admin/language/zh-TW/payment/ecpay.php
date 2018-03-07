@@ -33,10 +33,6 @@ $_['ecpay_text_geo_zone'] = '適用地區';
 $_['ecpay_text_all_zones'] = '所有地區';
 $_['ecpay_text_sort_order'] = '模組順序';
 
-$_['ecpay_text_create_status'] = '訂單建立狀態';
-$_['ecpay_text_success_status'] = '付款完成狀態';
-$_['ecpay_text_failed_status'] = '付款失敗狀態';
-
 // Error
 // admin/controller/payment/ecpay.php:141
 $_['ecpay_error_merchant_id'] = $_['ecpay_text_merchant_id'] . '不可為空值!';

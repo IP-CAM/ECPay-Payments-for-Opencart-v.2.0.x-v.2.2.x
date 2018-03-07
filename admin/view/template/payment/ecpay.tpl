@@ -134,48 +134,6 @@
 							<br />
 						</div>
 					</div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-create-status">
-                            <?php echo $ecpay_text_create_status; ?>
-                        </label>
-                        <div class="col-sm-8">
-                            <select name="ecpay_create_status" id="input-create-status" class="form-control">
-                                <?php foreach ($order_statuses as $order_status) { ?>
-                                    <option value="<?php echo $order_status['order_status_id']; ?>"<?php if ($order_status['order_status_id'] == $ecpay_create_status) { echo ' selected="selected"'; } ?>>
-                                        <?php echo $order_status['name']; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-success-status">
-                            <?php echo $ecpay_text_success_status; ?>
-                        </label>
-                        <div class="col-sm-8">
-                            <select name="ecpay_success_status" id="input-success-status" class="form-control">
-                                <?php foreach ($order_statuses as $order_status) { ?>
-                                    <option value="<?php echo $order_status['order_status_id']; ?>"<?php if ($order_status['order_status_id'] == $ecpay_success_status) { echo ' selected="selected"'; } ?>>
-                                        <?php echo $order_status['name']; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-failed-status">
-                            <?php echo $ecpay_text_failed_status; ?>
-                        </label>
-                        <div class="col-sm-8">
-                            <select name="ecpay_failed_status" id="input-failed-status" class="form-control">
-                                <?php foreach ($order_statuses as $order_status) { ?>
-                                    <option value="<?php echo $order_status['order_status_id']; ?>"<?php if ($order_status['order_status_id'] == $ecpay_failed_status) { echo ' selected="selected"'; } ?>>
-                                        <?php echo $order_status['name']; ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">
 							<?php echo $ecpay_text_geo_zone; ?>

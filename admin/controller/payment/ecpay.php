@@ -47,11 +47,6 @@ class ControllerPaymentECPay extends Controller {
 		$data['ecpay_text_atm'] = $this->language->get('ecpay_text_atm');
 		$data['ecpay_text_cvs'] = $this->language->get('ecpay_text_cvs');
 		$data['ecpay_text_barcode'] = $this->language->get('ecpay_text_barcode');
-
-		$data['ecpay_text_create_status'] = $this->language->get('ecpay_text_create_status');
-		$data['ecpay_text_success_status'] = $this->language->get('ecpay_text_success_status');
-		$data['ecpay_text_failed_status'] = $this->language->get('ecpay_text_failed_status');
-
 		$data['ecpay_text_geo_zone'] = $this->language->get('ecpay_text_geo_zone');
 		$data['ecpay_text_all_zones'] = $this->language->get('ecpay_text_all_zones');
 		$data['ecpay_text_sort_order'] = $this->language->get('ecpay_text_sort_order');
@@ -101,9 +96,6 @@ class ControllerPaymentECPay extends Controller {
 			'hash_key',
 			'hash_iv',
 			'payment_methods',
-            'create_status',
-            'success_status',
-            'failed_status',
 			'geo_zone_id',
 			'sort_order'
 		);
@@ -115,24 +107,11 @@ class ControllerPaymentECPay extends Controller {
 				$data[$tmp_setting_name] = $this->config->get($tmp_setting_name);
 			}
 		}
-
-		// Default value
-        $default_config = array(
-            'ecpay_merchant_id' => '2000132',
-            'ecpay_hash_key' => '5294y06JbISpM5x9',
-            'ecpay_hash_iv' => 'v77hoKGq4kWxNNIS',
-            'ecpay_create_status' => 1,
-            'ecpay_success_status' => 15,
-        );
-        foreach ($default_config as $name => $value) {
-            if (is_null($data[$name])) {
-                $data[$name] = $value;
-            }
-        }
-
-        # Get the order statuses
-        $this->load->model('localisation/order_status');
-        $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+		
+		# Test merchant info
+		if (empty($data['ecpay_merchant_id'])) {$data['ecpay_merchant_id'] = '2000132';}
+		if (empty($data['ecpay_hash_key'])) {$data['ecpay_hash_key'] = '5294y06JbISpM5x9';}
+		if (empty($data['ecpay_hash_iv'])) {$data['ecpay_hash_iv'] = 'v77hoKGq4kWxNNIS';}
 		
 		# Get the geo zone
 		$this->load->model('localisation/geo_zone');
@@ -142,7 +121,6 @@ class ControllerPaymentECPay extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-		
 		$this->response->setOutput($this->load->view('payment/ecpay.tpl', $data));
 	}
 	

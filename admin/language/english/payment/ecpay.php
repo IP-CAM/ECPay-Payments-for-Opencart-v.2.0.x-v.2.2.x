@@ -33,6 +33,10 @@ $_['ecpay_text_geo_zone'] = 'Geo Zone';
 $_['ecpay_text_all_zones'] = 'All Zones';
 $_['ecpay_text_sort_order'] = 'Sort Order';
 
+$_['ecpay_text_create_status'] = 'Create Status';
+$_['ecpay_text_success_status'] = 'Success Status';
+$_['ecpay_text_failed_status'] = 'Failed Status';
+
 // Error
 // admin/controller/payment/ecpay.php:141
 $_['ecpay_error_merchant_id'] = $_['ecpay_text_merchant_id'] . ' Required!';

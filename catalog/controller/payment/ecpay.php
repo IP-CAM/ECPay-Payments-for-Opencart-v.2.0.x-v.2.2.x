@@ -77,6 +77,7 @@ class ControllerPaymentEcpay extends Controller {
 						$aio->Send['ClientBackURL'] = str_replace('&amp;', '&', $this->url->link('account/order/info', 'order_id=' . $order_id, 'SSL'));
 						$aio->Send['MerchantTradeNo'] .= $order_id;
 						$aio->Send['MerchantTradeDate'] = date('Y/m/d H:i:s');
+						$aio->Send['NeedExtraPaidInfo'] = 'Y';
 						
 						# Set the product info
 						$aio->Send['TotalAmount'] = $this->model_payment_ecpay->formatOrderTotal($order['total']);
@@ -258,7 +259,7 @@ class ControllerPaymentEcpay extends Controller {
 						$fail_message = sprintf('Order %s Exception.(%s: %s)', $cart_order_id, $return_code, $return_message);
 						$order_create_status_id = $this->config->get('ecpay_create_status');
 						$paid_succeeded_status_id = $this->config->get('ecpay_success_status');
-						
+
 						switch($ecpay_payment_method) {
 							case ECPay_PaymentMethod::Credit:
 							case ECPay_PaymentMethod::WebATM:
@@ -276,22 +277,53 @@ class ControllerPaymentEcpay extends Controller {
 											$payment_result_comments,
 											true
 										);
+
+
+										// 若為信用卡 則寫入資料表紀錄提供開立電子發票使用
+										if(isset($ecpay_feedback['card4no']) && !empty($ecpay_feedback['card4no']) && $ecpay_payment_method == ECPay_PaymentMethod::Credit )
+										{
+											$nNow_Time  = time() ;
+
+											// 寫入信用卡後四碼
+											$this->db->query("INSERT INTO `order_extend` (`order_id`, `card_no4`, `createdate`) VALUES ('" . $cart_order_id . "', '" . $ecpay_feedback['card4no'] . "', '" . $nNow_Time . "' )" );
+										}
+										
 										
 										
 										// 判斷電子發票是否啟動 START
-										$nInvoice_Status  = $this->config->get('ecpayinvoice_status');
-										if($nInvoice_Status == 1)
+
+										// Check E-Invoice model
+										$opay_invoice_status = $this->config->get('opayinvoice_status');
+										$ecpay_invoice_status = $this->config->get('ecpayinvoice_status');
+
+										// Get E-Invoice model name
+										$invoice_prefix = '';
+										if ($opay_invoice_status === '1' and is_null($ecpay_invoice_status) === true) {
+											$invoice_prefix = 'opay';
+										}
+										if ($ecpay_invoice_status === '1' and is_null($opay_invoice_status) === true) {
+											$invoice_prefix = 'ecpay';
+										}
+
+										// E-Invoice auto issuel
+										if ($invoice_prefix !== '')
 										{
-											$this->load->model('payment/ecpayinvoice');
-											$nInvoice_Autoissue 	= $this->config->get('ecpayinvoice_autoissue');
-											$sCheck_Invoice_SDK	= $this->model_payment_ecpayinvoice->check_invoice_sdk();
-											if( $nInvoice_Autoissue == 1 && $sCheck_Invoice_SDK != false )
-											{	
-												$this->model_payment_ecpayinvoice->createInvoiceNo($cart_order_id, $sCheck_Invoice_SDK);
+											$invoice_model_name = 'model_payment_' . $invoice_prefix . 'invoice';
+											
+											$this->load->model('payment/' . $invoice_prefix . 'invoice');
+
+											$invoice_autoissue = $this->config->get($invoice_prefix . 'invoice_autoissue');
+											$valid_invoice_sdk = $this->$invoice_model_name->check_invoice_sdk();
+											
+											if($invoice_autoissue === '1' and $valid_invoice_sdk != false)
+											{    
+										    		$this->$invoice_model_name->createInvoiceNo($cart_order_id, $valid_invoice_sdk);
 											}
 										}
 										// 判斷電子發票是否啟動 END
-	
+
+
+										
 									}
 								}
 								break;

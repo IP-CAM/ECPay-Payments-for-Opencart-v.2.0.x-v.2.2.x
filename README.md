@@ -1,3 +1,25 @@
+# 绿界 科技 全 全 全 金 金 整 介 介 介 介 o o
+---
+
+## 1 Introduction
+
+   - Green Golden Flow Suit (hereinafter referred to as plug-in suite), providing cooperative special stores and personal members using open original code store systems, there is no need to handle complex queues, directly through the installation of external suits, can be faster Interpolated the Green Gold Flow System.
+
+
+## 2. Support version
+    - OpenCART 2.0.0.0 ~ 2.2.0.0
+  
+ 
+
+## 3. Precautions
+   - The plug-in suite supports only the UTF8 language version of the PHP store system.
+  
+ 
+
+## 4. Contact us
+   - Green Technical Service Engineer Mailbox: Techsupport@ecpay.com.tw
+
+---
 # 綠界科技 全方位(All In One)金流整合介接 OpenCart2.0 購物車版
 ---
 

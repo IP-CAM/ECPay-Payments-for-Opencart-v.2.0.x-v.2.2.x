@@ -1,4 +1,4 @@
-# 绿界 科技 全 全 全 金 金 整 介 介 介 介 o o
+# Green Technology All All Golden Gold White DieN 
 ---
 
 ## 1 Introduction
